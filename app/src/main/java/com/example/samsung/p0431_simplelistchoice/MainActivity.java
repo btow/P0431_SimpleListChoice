@@ -3,6 +3,7 @@ package com.example.samsung.p0431_simplelistchoice;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,14 +24,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         lvMain = (ListView) findViewById(R.id.lvMain);
         //устанавливаем режим выбора пунктов списка
-        lvMain.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        lvMain.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         //создаём адаптер, используя массив из файла ресурсов
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.names, android.R.layout.simple_list_item_single_choice);
+                this, R.array.names, android.R.layout.simple_list_item_multiple_choice);
         //подключаем адаптер к списку
         lvMain.setAdapter(adapter);
 
-        btnChecked = (Button) findViewById(R/ R.id.btnChecked);
+        btnChecked = (Button) findViewById(R.id.btnChecked);
         btnChecked.setOnClickListener(this);
 
         //получаем массив из файла ресурсов
@@ -40,6 +41,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         //пишев лог выделенный элемент
-        Log.d(LOG_TAG, "Checked: " + names[lvMain.getCheckedItemPosition()]);
+        Log.d(LOG_TAG, "Checked: ");
+        SparseBooleanArray sparseBooleanArray = lvMain.getCheckedItemPositions();
+        for (int i = 0; i < sparseBooleanArray.size(); i++) {
+            int kay = sparseBooleanArray.keyAt(i);
+            if (sparseBooleanArray.get(kay)) {
+                Log.d(LOG_TAG, "--- " + names[kay]);
+            }
+        }
     }
 }
